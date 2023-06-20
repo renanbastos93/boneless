@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/renanbastos93/boneless/templates/app"
+	"{{.Module}}/{{.ComponentName}}"
 )
 
 func (e implBFF) GetAllExamples(c *fiber.Ctx) (err error) {

@@ -1,9 +1,9 @@
-package app
+package {{.ComponentName}}
 
 import (
 	"time"
 
-	"github.com/renanbastos93/boneless/templates/app/store"
+	"{{.Module}}/{{.ComponentName}}/store"
 )
 
 type ExampleOut struct {

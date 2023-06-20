@@ -7,12 +7,12 @@ import (
 	"github.com/ServiceWeaver/weaver"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/renanbastos93/boneless/templates/app"
+	"{{.Module}}/{{.ComponentName}}"
 )
 
 type implBFF struct {
 	weaver.Implements[weaver.Main]
-	example weaver.Ref[app.Component]
+	example weaver.Ref[{{.ComponentName}}.Component]
 	bff     weaver.Listener `weaver:"bff"`
 
 	f *fiber.App

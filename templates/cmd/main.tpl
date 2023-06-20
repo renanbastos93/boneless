@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/ServiceWeaver/weaver"
-	_ "github.com/renanbastos93/boneless/templates/bff"
+	_ "{{.Module}}/bff"
 )
 
 func main() {
