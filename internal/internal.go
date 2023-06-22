@@ -49,3 +49,5 @@ func RunMakeMigrate(componentName string, name string) {
 		panic(err)
 	}
 }
+
+func GenerateQueryByEntity() {}
