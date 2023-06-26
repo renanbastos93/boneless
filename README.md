@@ -1,2 +1,2 @@
 # boneless
-Inspired by Ivar Boneless we have the goal to help everyone to make a monolith with a strategy to win your problems.
+Inspired by the character 'The Boneless,' a prominent figure in the Vikings saga, known for his exceptional agility and battlefield flexibility, our CLI project bears his name. The central idea behind this choice stems from his leadership characterized by strategic brilliance. Our primary objective is to enhance your daily workflow by facilitating the creation of a monolith that can be effortlessly decoupled and transformed into microservices. Leveraging open-source tools like Weaver, SQLC, and GOMIGRATE, we aim to provide comprehensive assistance throughout the process
