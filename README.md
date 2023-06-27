@@ -1,10 +1,12 @@
 # boneless
-Inspired by the character 'The Boneless,' a prominent figure in the Vikings saga, known for his exceptional agility and battlefield flexibility, our CLI project bears his name. The central idea behind this choice stems from his leadership characterized by strategic brilliance. Our primary objective is to enhance your daily workflow by facilitating the creation of a monolith that can be effortlessly decoupled and transformed into microservices. Leveraging open-source tools like Weaver, SQLC, and GOMIGRATE, we aim to provide comprehensive assistance throughout the process.
+Inspired by the character 'The Boneless,' a prominent figure in the Vikings saga, known for his exceptional agility and battlefield flexibility, our CLI project bears his name. The central idea behind this choice stems from his leadership characterized by strategic brilliance. Our primary objective is to enhance your daily workflow by facilitating the creation of a monolith that can be effortlessly decoupled and transformed into microservices. Leveraging open-source tools like Weaver, SQLC, gofiber and GOMIGRATE, we aim to provide comprehensive assistance throughout the process.
 
 Dependecies
  - [Service Wevar](https://serviceweaver.dev/)
+ - [Fiber](https://gofiber.io/)
  - [SQLC](https://docs.sqlc.dev/en/stable/overview/install.html)
- - [Go Migraet](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#installation)
+ - [Go Migrate](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#installation)
+ 
 
 ## how to use that
 ```
@@ -25,6 +27,7 @@ Usage: boneless [target]
 ## Architecture
 We envisioned adopting an architecture similar to Hexagonal/Clean Architecture, which allows for the easy creation of applications in a decoupled and concise manner.
 
+![image](https://github.com/renanbastos93/boneless/assets/8202898/36a9a778-68c3-4d47-8983-27e775d48fd9)
 
 
 ## Directory Structure
