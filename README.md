@@ -27,7 +27,7 @@ Usage: boneless [target]
 ## Architecture
 We envisioned adopting an architecture similar to Hexagonal/Clean Architecture, which allows for the easy creation of applications in a decoupled and concise manner.
 
-![image](https://github.com/renanbastos93/boneless/assets/8202898/36a9a778-68c3-4d47-8983-27e775d48fd9)
+![image](https://github.com/renanbastos93/boneless/assets/8202898/b2ca8d54-46a6-4a19-bebc-94938f438cd5)
 
 
 ## Directory Structure
