@@ -3,10 +3,12 @@ package {{.ComponentName}}
 import (
 	"time"
 
-	"{{.Module}}/{{.ComponentName}}/store"
+	"github.com/ServiceWeaver/weaver"
+	"{{.Module}}/internal/{{.ComponentName}}/store"
 )
 
 type ExampleOut struct {
+	weaver.AutoMarshal
 	ID        int       `json:"id,omitempty"`
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	Message   string    `json:"message,omitempty"`
@@ -30,6 +32,7 @@ func (e AllExamplesOut) FromStore(in []store.Example) AllExamplesOut {
 }
 
 type ExampleIn struct {
+	weaver.AutoMarshal
 	Message string
 }
 

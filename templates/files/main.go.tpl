@@ -5,11 +5,11 @@ import (
 	"log"
 
 	"github.com/ServiceWeaver/weaver"
-	_ "{{.Module}}/bff"
+	"{{.Module}}/internal/bff"
 )
 
 func main() {
-	if err := weaver.Run(context.Background()); err != nil {
+	if err := weaver.Run(context.Background(), bff.Server); err != nil {
 		log.Fatal(err)
 	}
 }

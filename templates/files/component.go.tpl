@@ -6,13 +6,13 @@ import (
 	"fmt"
 
 	"github.com/ServiceWeaver/weaver"
-	"{{.Module}}/{{.ComponentName}}/store"
+	"{{.Module}}/internal/{{.ComponentName}}/store"
 )
 
 type Component interface {
 	AllExamples(ctx context.Context) (out AllExamplesOut, err error)
 	GetOneExampleById(ctx context.Context, id int32) (out ExampleOut, err error)
-	CreateExample(ctx context.Context, in ExampleIn) (err error)
+	CreateExample(ctx context.Context, in ExampleIn) (ok bool, err error)
 }
 
 type Config struct {
@@ -20,13 +20,13 @@ type Config struct {
 	Source string
 }
 
-type impl{{.ComponentName}} struct {
+type implapp struct {
 	weaver.Implements[Component]
 	weaver.WithConfig[Config]
 	db *store.Queries
 }
 
-func (e *impl{{.ComponentName}}) Init(ctx context.Context) error {
+func (e *implapp) Init(ctx context.Context) error {
 	db, err := sql.Open(e.Config().Driver, e.Config().Source)
 	if err != nil {
 		return fmt.Errorf("not open: %w", err)
@@ -39,7 +39,7 @@ func (e *impl{{.ComponentName}}) Init(ctx context.Context) error {
 	return nil
 }
 
-func (e impl{{.ComponentName}}) AllExamples(ctx context.Context) (out AllExamplesOut, err error) {
+func (e implapp) AllExamples(ctx context.Context) (out AllExamplesOut, err error) {
 	examples, err := e.db.ListExamples(ctx)
 	if err != nil {
 		return out, err
@@ -47,7 +47,7 @@ func (e impl{{.ComponentName}}) AllExamples(ctx context.Context) (out AllExample
 	return out.FromStore(examples), nil
 }
 
-func (e impl{{.ComponentName}}) GetOneExampleById(ctx context.Context, id int32) (out ExampleOut, err error) {
+func (e implapp) GetOneExampleById(ctx context.Context, id int32) (out ExampleOut, err error) {
 	example, err := e.db.GetExampleById(ctx, id)
 	if err != nil {
 		return out, err
@@ -55,10 +55,10 @@ func (e impl{{.ComponentName}}) GetOneExampleById(ctx context.Context, id int32)
 	return out.FromStore(example), nil
 }
 
-func (e impl{{.ComponentName}}) CreateExample(ctx context.Context, in ExampleIn) (err error) {
+func (e implapp) CreateExample(ctx context.Context, in ExampleIn) (ok bool, err error) {
 	_, err = e.db.CreateExample(ctx, in.ToStore())
 	if err != nil {
-		return err
+		return false, err
 	}
-	return nil
+	return true, nil
 }

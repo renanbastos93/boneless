@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"{{.Module}}/{{.ComponentName}}"
+	"{{.Module}}/internal/{{.ComponentName}}"
 )
 
 func (e implBFF) GetAllExamples(c *fiber.Ctx) (err error) {
@@ -35,7 +35,7 @@ func (e implBFF) CreateExample(c *fiber.Ctx) (err error) {
 		return fiber.ErrBadRequest
 	}
 
-	err = e.example.Get().CreateExample(c.Context(), body)
+	_, err = e.example.Get().CreateExample(c.Context(), body)
 	if err != nil {
 		return fiber.ErrInternalServerError
 	}
