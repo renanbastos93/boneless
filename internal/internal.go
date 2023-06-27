@@ -1,10 +1,12 @@
 package internal
 
 import (
+	"fmt"
 	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 func findComponentPath(componentName string) (dir string) {
@@ -24,18 +26,32 @@ func findComponentPath(componentName string) (dir string) {
 	return dir
 }
 
-func RunSqlcGenerate(componentName string) {
+func SqlcGenerateByComponent(componentName string) {
 	dir := findComponentPath(componentName)
-	cmd := exec.Command("sqlc", "generate", "-f", dir+"/db/sqlc.yaml")
-	err := cmd.Run()
+	err := runCmd("sqlc", "generate", "-f", dir+"/db/sqlc.yaml")
 	if err != nil {
 		panic(err)
 	}
 }
 
-func RunWeaverGenerate() {
-	cmd := exec.Command("weaver", "generate", "./...")
-	err := cmd.Run()
+func SqlcGenerate(componentName ...string) {
+	pwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	filepath.Walk(pwd, func(path string, info fs.FileInfo, err error) error {
+		if !info.IsDir() && strings.HasSuffix(info.Name(), "sqlc.yaml") {
+			err := runCmd("sqlc", "generate", "-f", path)
+			if err != nil {
+				fmt.Println("warn: can't running sqlc in", path)
+			}
+		}
+		return nil
+	})
+}
+
+func WeaverGenerate() {
+	err := runCmd("weaver", "generate", "./...")
 	if err != nil {
 		panic(err)
 	}
@@ -43,11 +59,23 @@ func RunWeaverGenerate() {
 
 func RunMakeMigrate(componentName string, name string) {
 	dir := findComponentPath(componentName)
-	cmd := exec.Command("migrate", "create", "-ext", "sql", "-dir", dir+"/db/migrations/", name)
-	err := cmd.Run()
+	err := runCmd("migrate", "create", "-ext", "sql", "-dir", dir+"/db/migrations/", name)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func GenerateQueryByEntity() {}
+func ModTidy() {
+	err := runCmd("go", "mod", "tidy")
+	if err != nil {
+		panic(err)
+	}
+}
+
+func runCmd(name string, args ...string) (err error) {
+	cmd := exec.Command(name, args...)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
