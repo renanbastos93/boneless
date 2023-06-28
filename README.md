@@ -61,3 +61,8 @@ We envisioned adopting an architecture similar to Hexagonal/Clean Architecture, 
 │       └── weaver_gen.go
 └── weaver.toml
 ```
+
+
+## Links
+- [Boneless: a CLI to create your apps with Go](https://dev.to/renanbastos93/boneless-a-cli-to-create-your-apps-with-go-31kh)
+- Building a Project from Scratch with Boneless CLI (WIP)
