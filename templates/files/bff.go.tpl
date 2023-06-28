@@ -27,16 +27,8 @@ func (e *implBFF) createRouter(ctx context.Context) {
 	grpExamples.Post("/", e.CreateExample)
 }
 
-func (e *implBFF) Main(ctx context.Context) error {
-	fmt.Printf("BFF listener available on %v\n", e.bff.String())
-
-	f := fiber.New()
-	e.createRouter(ctx)
-	return f.Listener(e.bff)
-}
-
 func Server(ctx context.Context, e *implBFF) (err error) {
-	fmt.Printf("BFF listener available on %v\n", e.bff.String())
+	fmt.Printf("BFF listener available on %v\n", e.bff)
 
 	e.f = fiber.New()
 	e.createRouter(ctx)
