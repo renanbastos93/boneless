@@ -89,5 +89,7 @@ func main() {
 		internal.RunMigrate(flag.Arg(1), flag.Arg(2))
 	case cmdRun:
 		internal.Start()
+	default:
+		flag.Usage()
 	}
 }
