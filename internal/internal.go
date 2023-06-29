@@ -28,10 +28,14 @@ func findComponentPath(componentName string) (dir string) {
 
 func SqlcGenerateByComponent(componentName string) {
 	dir := findComponentPath(componentName)
-	err := runCmd("sqlc", "generate", "-f", dir+"/db/sqlc.yaml")
-	if err != nil {
-		panic(err)
+	filePath := dir + "/db/sqlc.yaml"
+
+	if stat, _ := os.Stat(filePath); stat == nil || stat.IsDir() {
+		fmt.Println("not found sqlc.yaml file in this app: ", componentName)
+		return
 	}
+
+	_ = runCmd("sqlc", "generate", "-f", filePath)
 }
 
 func SqlcGenerate(componentName ...string) {
@@ -41,10 +45,7 @@ func SqlcGenerate(componentName ...string) {
 	}
 	filepath.Walk(pwd, func(path string, info fs.FileInfo, err error) error {
 		if !info.IsDir() && strings.HasSuffix(info.Name(), "sqlc.yaml") {
-			err := runCmd("sqlc", "generate", "-f", path)
-			if err != nil {
-				fmt.Println("warn: can't running sqlc in", path)
-			}
+			_ = runCmd("sqlc", "generate", "-f", path)
 		}
 		return nil
 	})
