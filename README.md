@@ -17,15 +17,33 @@ Inspired by the character 'The Boneless,' a prominent figure in the Vikings saga
 $ go install github.com/renanbastos93/boneless/cmd/boneless@latest
 $ boneless help
 Usage: boneless [target]
-  help                                // show commands for use
-  version                             // show version
-  create-scratch                      // create project from scratch using Weaver + sqlc + go-migrate
-  build                               // build Weaver component with SQLC
-  make-migrate <app-name> <name>      // create a new migrate from app
-  migrate <app-name>                  // run migrate from app
-  create-app <app-name>               // create a new app based on the app for example later you can change that
-  build-app <app-name>                // build using Weaver + SQLC
-  run                                 // running project using Weaver single
+
+Targets:
+  help                                     Show commands for use
+  version                                  Show version
+  create-scratch                           Create a project from scratch using Weaver, SQLC, and go-migrate
+  build                                    Build the Weaver component with SQLC
+  make-migrate <app-name> <name>           Create a new migration for an app
+  migrate <app-name> <up|down>             Run migrations for an app
+  create-app <app-name>                    Create a new app based on a template
+  build-app <app-name>                     Build an app using Weaver and SQLC
+  run                                      Run the project using Weaver
+
+Parameters:
+  <app-name>                               Name of the app to create or run migrations on
+  <name>                                   Name of the migration to create
+  <up|down>                                Specify "up" to apply migrations or "down" to rollback migrations
+
+Examples:
+  boneless help
+  boneless version
+  boneless create-scratch
+  boneless build
+  boneless make-migrate my-app migration-name
+  boneless migrate my-app up
+  boneless create-app my-app
+  boneless build-app my-app
+  boneless run
 ```
 
 ## Architecture
