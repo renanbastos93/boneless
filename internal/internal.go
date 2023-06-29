@@ -79,3 +79,12 @@ func runCmd(name string, args ...string) (err error) {
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
 }
+
+func RunMigrate(componentName, upDown string) {
+	dir := findComponentPath(componentName)
+	queryConn := ReadToml(componentName)
+	err := runCmd("migrate", "-path", dir+"/db/migrations/", "-database", queryConn, "-verbose", upDown)
+	if err != nil {
+		panic(err)
+	}
+}
