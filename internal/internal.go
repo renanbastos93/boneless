@@ -26,12 +26,9 @@ func findComponentPath(componentName string) (dir string) {
 	return dir
 }
 
-func SqlcGenerateByComponent(componentName string) {
-	dir := findComponentPath(componentName)
-	filePath := dir + "/db/sqlc.yaml"
-
+func sqlcGenerateByComponent(filePath string) {
 	if stat, _ := os.Stat(filePath); stat == nil || stat.IsDir() {
-		fmt.Println("warn: not found sqlc.yaml file in this app: ", componentName)
+		fmt.Fprintln(os.Stderr, "not found file:", filePath)
 		return
 	}
 
@@ -43,6 +40,13 @@ func SqlcGenerate(componentName ...string) {
 	if err != nil {
 		panic(err)
 	}
+
+	if len(componentName) > 0 {
+		dir := findComponentPath(componentName[0])
+		sqlcGenerateByComponent(dir + "/db/sqlc.yaml")
+		return
+	}
+
 	filepath.Walk(pwd, func(path string, info fs.FileInfo, err error) error {
 		if !info.IsDir() && strings.HasSuffix(info.Name(), "sqlc.yaml") {
 			_ = runCmd("sqlc", "generate", "-f", path)
