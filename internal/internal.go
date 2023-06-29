@@ -31,7 +31,7 @@ func SqlcGenerateByComponent(componentName string) {
 	filePath := dir + "/db/sqlc.yaml"
 
 	if stat, _ := os.Stat(filePath); stat == nil || stat.IsDir() {
-		fmt.Println("not found sqlc.yaml file in this app: ", componentName)
+		fmt.Println("warn: not found sqlc.yaml file in this app: ", componentName)
 		return
 	}
 
