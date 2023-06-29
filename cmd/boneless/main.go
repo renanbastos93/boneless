@@ -74,13 +74,13 @@ func main() {
 		internal.WeaverGenerate()
 	case cmdCreateApp:
 		internal.Build(flag.Arg(1), internal.KindComponent)
-		internal.SqlcGenerateByComponent(flag.Arg(1))
+		internal.SqlcGenerate(flag.Arg(1))
 		internal.WeaverGenerate()
 	case cmdBuild:
 		internal.SqlcGenerate()
 		internal.WeaverGenerate()
 	case cmdBuildApp:
-		internal.SqlcGenerateByComponent(flag.Arg(1))
+		internal.SqlcGenerate(flag.Arg(1))
 		internal.WeaverGenerate()
 	case cmdMakeMigrate:
 		internal.SqlcGenerate()
