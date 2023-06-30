@@ -53,6 +53,10 @@ const (
 	DefaultComponentName = "app"
 )
 
+func init() {
+	internal.ValidateLatestVersion()
+}
+
 func main() {
 	flag.Usage = func() { fmt.Fprint(os.Stderr, usage) }
 
