@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"io/fs"
 	"os"
 	"os/exec"
@@ -28,7 +27,6 @@ func findComponentPath(componentName string) (dir string) {
 
 func sqlcGenerateByComponent(filePath string) {
 	if stat, _ := os.Stat(filePath); stat == nil || stat.IsDir() {
-		fmt.Fprintln(os.Stderr, "not found file:", filePath)
 		return
 	}
 
