@@ -1,57 +1,26 @@
 ---
 description: >-
-  Let's dive into the architecture used in Boneless. In this section, we will
-  explore the intricacies and key details of the architecture that powers the
-  project created by Boneless.
+  A CLI (Command Line Interface) to create your apps with Service Weaver, using
+  gomigrate, sqlc, and Fiber.
 ---
 
-# 💡 About the architecture
+# 👋 Welcome
 
-## What is the architecture used as the foundation for Boneless?
+## Why was the name 'Boneless' chosen for this CLI tool?
 
-Boneless was inspired by Clean Architecture and offers templates that follow its core concepts. The templates provided by Boneless facilitate the creation of modular, maintainable, and testable codebases by promoting a clear separation of concerns and the independence of business logic from external dependencies. By using Boneless templates, developers can jumpstart their projects with a well-organized structure that aligns with Clean Architecture, enabling them to focus on implementing the domain-specific logic while adhering to best practices. Boneless empowers developers to build robust and scalable applications, leveraging the benefits of Clean Architecture for easier understanding, maintenance, and evolution over time.
+The choice of the name "Boneless" for this CLI tool draws inspiration from the historical figure Ivar the Boneless. Ivar the Boneless was a legendary Viking leader known for his strategic prowess, adaptability, and agility on the battlefield.
 
-<figure><img src="https://blog.geisonbiazus.com/static/image/architecture.png" alt=""><figcaption></figcaption></figure>
+In a similar vein, the name "Boneless" for the CLI tool reflects these qualities in the context of software development. It symbolizes the tool's ability to navigate through complex tasks and challenges effortlessly, just as Ivar the Boneless maneuvered through battles with agility and cunning.
 
+By associating the CLI tool with Ivar the Boneless, the name not only captures the spirit of adaptability and flexibility but also adds a touch of historical significance to the tool's identity.
 
+In summary, the name "Boneless" pays homage to Ivar the Boneless and serves as a metaphor for the CLI tool's ability to conquer development obstacles with ease and grace.
 
-Based on Service Weaver, which generates connections between components using gRPC, has greatly facilitated the development of our applications.
+## Which are the tools used behind the Boneless?
 
-## Here is the current repository structure, reflecting the adopted architecture:
+1. **Service Weaver**: Service Weaver is a tool that facilitates the creation and management of microservices. It helps in defining service boundaries, handling service discovery, and managing communication between microservices.
+2. **go-migrate**: go-migrate is a database migration tool for Go applications. It allows developers to manage database schema changes and versioning in a structured and automated manner, ensuring smooth database migrations across different environments.
+3. **SQLC**: SQLC is a tool that generates type-safe Go code based on SQL queries. It helps in writing database code by automating the process of generating Go code from SQL queries, reducing boilerplate code and enhancing type safety.
+4. **Fiber**: Fiber is a fast and efficient web framework for Go. It provides a lightweight and easy-to-use foundation for building web applications. Fiber offers features like routing, middleware support, and performance optimizations, making it a popular choice for developing high-performance web services.
 
-```
-.
-├── cmd
-│   └── main.go
-├── go.mod
-├── go.sum
-├── internal
-│   ├── app
-│   │   ├── component.go
-│   │   ├── db
-│   │   │   ├── migrations
-│   │   │   │   └── schema.sql
-│   │   │   ├── query.sql
-│   │   │   └── sqlc.yaml
-│   │   ├── entity.go
-│   │   ├── store
-│   │   │   ├── db.go
-│   │   │   ├── models.go
-│   │   │   └── query.sql.go
-│   │   └── weaver_gen.go
-│   └── bff
-│       ├── bff.go
-│       ├── router.go
-│       └── weaver_gen.go
-└── weaver.toml
-```
-
-In this structure, we can observe the organization of directories and files in the repository. The `cmd` directory contains the `main.go` file, which is responsible for starting the application. The `go.mod` and `go.sum` files are used to manage project dependencies.
-
-The `internal` the directory is where the main implementation of the application resides. Inside, we have the `app` directory, which contains components related to the application's domain, such as entities and business logic. The `db` directory is used to store files related to the database layer, such as migrations and SQL queries.
-
-The `store` directory contains files related to data storage, such as the implementation of database access. The `bff` directory contains files related to the implementation of the Backend for the Frontend layer.
-
-Lastly, the `weaver.toml` file is used to configure Service Weaver, which facilitates generating connections between application components using gRPC.
-
-This directory and file structure reflects the adopted architecture in the repository, following the principles of Clean Architecture and facilitating the organization and maintenance of the application's source code.
+These tools, when used alongside Boneless, contribute to various aspects of the development process. Service Weaver aids in managing microservices, go-migrate simplifies database migrations, SQLC enhances database code generation, and Fiber provides a robust framework for building web applications. Together, they enhance the functionality and development experience of Boneless.
