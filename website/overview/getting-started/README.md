@@ -17,5 +17,5 @@ $ go install github.com/ServiceWeaver/weaver/cmd/weaver@latest
 $ go install github.com/renanbastos93/boneless/cmd/boneless@latest
 ```
 
-lets go...
+After that is installed, let's create our first project from scratch using Boneless, a framework based on clean architecture, to efficiently generate and organize the project structure, implement functionality, and deploy it with ease. Once the project is set up, we can pass to the next page to create that.
 
