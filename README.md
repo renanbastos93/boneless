@@ -1,86 +1,26 @@
-# boneless
-Inspired by the character 'The Boneless,' a prominent figure in the Vikings saga, known for his exceptional agility and battlefield flexibility, our CLI project bears his name. The central idea behind this choice stems from his leadership characterized by strategic brilliance. Our primary objective is to enhance your daily workflow by facilitating the creation of a monolith that can be effortlessly decoupled and transformed into microservices. Leveraging open-source tools like Weaver, SQLC, gofiber and GOMIGRATE, we aim to provide comprehensive assistance throughout the process.
+---
+description: >-
+  A CLI (Command Line Interface) to create your apps with Service Weaver, using
+  gomigrate, sqlc, and Fiber.
+---
 
+# 👋 Welcome
 
-![image](https://github.com/renanbastos93/boneless/assets/8202898/46918810-9564-4ab6-b96a-933bca50fd94)
+## Why was the name 'Boneless' chosen for this CLI tool?
 
+The choice of the name "Boneless" for this CLI tool draws inspiration from the historical figure Ivar the Boneless. Ivar the Boneless was a legendary Viking leader known for his strategic prowess, adaptability, and agility on the battlefield.
 
-### Dependencies
- - [Service Wevar](https://serviceweaver.dev/)
- - [Fiber](https://gofiber.io/)
- - [SQLC](https://docs.sqlc.dev/en/stable/overview/install.html)
- - [Go Migrate](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#installation)
- 
+In a similar vein, the name "Boneless" for the CLI tool reflects these qualities in the context of software development. It symbolizes the tool's ability to navigate through complex tasks and challenges effortlessly, just as Ivar the Boneless maneuvered through battles with agility and cunning.
 
-## How to use that
-```
-$ go install github.com/renanbastos93/boneless/cmd/boneless@latest
-$ boneless help
-Usage: boneless [target]
+By associating the CLI tool with Ivar the Boneless, the name not only captures the spirit of adaptability and flexibility but also adds a touch of historical significance to the tool's identity.
 
-Targets:
-  help                                     Show commands for use
-  version                                  Show version
-  create-scratch                           Create a project from scratch using Weaver, SQLC, and go-migrate
-  build                                    Build the Weaver component with SQLC
-  make-migrate <app-name> <name>           Create a new migration for an app
-  migrate <app-name> <up|down>             Run migrations for an app
-  create-app <app-name>                    Create a new app based on a template
-  build-app <app-name>                     Build an app using Weaver and SQLC
-  run                                      Run the project using Weaver
+In summary, the name "Boneless" pays homage to Ivar the Boneless and serves as a metaphor for the CLI tool's ability to conquer development obstacles with ease and grace.
 
-Parameters:
-  <app-name>                               Name of the app to create or run migrations on
-  <name>                                   Name of the migration to create
-  <up|down>                                Specify "up" to apply migrations or "down" to rollback migrations
+## Which are the tools used behind the Boneless?
 
-Examples:
-  boneless help
-  boneless version
-  boneless create-scratch
-  boneless build
-  boneless make-migrate my-app migration-name
-  boneless migrate my-app up
-  boneless create-app my-app
-  boneless build-app my-app
-  boneless run
-```
+1. **Service Weaver**: Service Weaver is a tool that facilitates the creation and management of microservices. It helps in defining service boundaries, handling service discovery, and managing communication between microservices.
+2. **go-migrate**: go-migrate is a database migration tool for Go applications. It allows developers to manage database schema changes and versioning in a structured and automated manner, ensuring smooth database migrations across different environments.
+3. **SQLC**: SQLC is a tool that generates type-safe Go code based on SQL queries. It helps in writing database code by automating the process of generating Go code from SQL queries, reducing boilerplate code and enhancing type safety.
+4. **Fiber**: Fiber is a fast and efficient web framework for Go. It provides a lightweight and easy-to-use foundation for building web applications. Fiber offers features like routing, middleware support, and performance optimizations, making it a popular choice for developing high-performance web services.
 
-## Architecture
-We envisioned adopting an architecture similar to Hexagonal/Clean Architecture, which allows for the easy creation of applications in a decoupled and concise manner.
-
-![image](https://github.com/renanbastos93/boneless/assets/8202898/b2ca8d54-46a6-4a19-bebc-94938f438cd5)
-
-
-## Directory Structure
-```sh
-.
-├── cmd
-│   └── main.go
-├── go.mod
-├── go.sum
-├── internal
-│   ├── app
-│   │   ├── component.go
-│   │   ├── db
-│   │   │   ├── migrations
-│   │   │   │   └── schema.sql
-│   │   │   ├── query.sql
-│   │   │   └── sqlc.yaml
-│   │   ├── entity.go
-│   │   ├── store
-│   │   │   ├── db.go
-│   │   │   ├── models.go
-│   │   │   └── query.sql.go
-│   │   └── weaver_gen.go
-│   └── bff
-│       ├── bff.go
-│       ├── router.go
-│       └── weaver_gen.go
-└── weaver.toml
-```
-
-
-## Links
-- [Boneless: a CLI to create your apps with Go](https://dev.to/renanbastos93/boneless-a-cli-to-create-your-apps-with-go-31kh)
-- Building a Project from Scratch with Boneless CLI (WIP)
+These tools, when used alongside Boneless, contribute to various aspects of the development process. Service Weaver aids in managing microservices, go-migrate simplifies database migrations, SQLC enhances database code generation, and Fiber provides a robust framework for building web applications. Together, they enhance the functionality and development experience of Boneless.
