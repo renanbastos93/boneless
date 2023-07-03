@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"io/fs"
 	"os"
 	"os/exec"
@@ -26,6 +27,7 @@ func findMainFile() (filePath string) {
 		panic(err)
 	}
 
+	// TODO: improve that to ensure that the file is the package main
 	_ = filepath.Walk(pwd, func(path string, info fs.FileInfo, _ error) error {
 		if !info.IsDir() {
 			if info.Name() == "main.go" {
@@ -40,6 +42,15 @@ func findMainFile() (filePath string) {
 
 func Start() {
 	mainFile := findMainFile()
+
+	// Set SERVICEWEAVER_CONFIG environment variable if not already set
+	if _, ok := os.LookupEnv("SERVICEWEAVER_CONFIG"); !ok {
+		err := os.Setenv("SERVICEWEAVER_CONFIG", "./weaver.toml")
+		if err != nil {
+			panic(fmt.Sprintf("failed to set env var SERVICEWEAVER_CONFIG: %s", err))
+		}
+	}
+
 	cmd := exec.Command("go", "run", mainFile)
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Setpgid: true,
