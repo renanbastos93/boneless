@@ -29,6 +29,7 @@ func ReadToml(componentName string) (qsConn string) {
 		panic(err)
 	}
 
+	// TODO: improve that same internal/run.go:46
 	weaverToml, err := ioutil.ReadFile(pwd + "/weaver.toml")
 	if err != nil {
 		panic(err)

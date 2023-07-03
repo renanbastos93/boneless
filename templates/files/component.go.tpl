@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/ServiceWeaver/weaver"
+	_ "github.com/go-sql-driver/mysql"
 	"{{.Module}}/internal/{{.ComponentName}}/store"
 )
 
