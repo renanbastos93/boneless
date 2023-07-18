@@ -12,6 +12,22 @@ import (
 type contentTpl struct {
 	ComponentName string
 	Module        string
+	IsSQLLite3    bool
+	IsSQL         bool
+}
+
+const (
+	SQL      = "sql"
+	SQLlite3 = "sqlite3"
+)
+
+func (e *contentTpl) setDatabaseToUse(whichSql string) {
+	switch strings.ToLower(whichSql) {
+	case SQL:
+		e.IsSQL = true
+	default:
+		e.IsSQLLite3 = true
+	}
 }
 
 func generateFile(filePath string) (fd *os.File) {
@@ -50,16 +66,20 @@ func whatFilesGen(tpl []tplFiles, kind string) (data []tplFiles) {
 	return data
 }
 
-func Build(appName string, which string) {
+func Build(appName string, which string, whichSql string) {
 	pwd, err := os.Getwd()
 	if err != nil {
 		panic(err)
 	}
 
-	ct := contentTpl{
+	ct := &contentTpl{
 		ComponentName: appName,
 		Module:        GetProjectName(pwd),
+		IsSQLLite3:    false,
+		IsSQL:         false,
 	}
+
+	ct.setDatabaseToUse(whichSql)
 
 	tpls := whatFilesGen(templateFiles, which)
 	for _, tf := range tpls {
