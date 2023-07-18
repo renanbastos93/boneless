@@ -73,12 +73,12 @@ func main() {
 	case cmdVersion:
 		fmt.Fprintln(os.Stdout, internal.Version)
 	case cmdCreateScratch:
-		internal.Build(DefaultComponentName, internal.KindAll)
+		internal.Build(DefaultComponentName, internal.KindAll, flag.Arg(1))
 		internal.SqlcGenerate()
 		internal.ModTidy()
 		internal.WeaverGenerate()
 	case cmdCreateApp:
-		internal.Build(flag.Arg(1), internal.KindComponent)
+		internal.Build(flag.Arg(1), internal.KindComponent, "")
 		internal.SqlcGenerate(flag.Arg(1))
 		internal.WeaverGenerate()
 	case cmdBuild:
