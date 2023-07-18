@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	
+
 	"github.com/ServiceWeaver/weaver"
 
 	"{{.Module}}/internal/{{.ComponentName}}/store"
@@ -43,7 +43,7 @@ func (e *implapp) Init(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("failed to ping: %w", err)
 	}
-	
+
 	e.db = store.New(db)
 	return nil
 }
