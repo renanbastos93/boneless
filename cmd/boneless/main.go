@@ -13,7 +13,8 @@ const usage = `Usage: boneless [target]
 Targets:
   help                                     Show commands for use
   version                                  Show version
-  create-scratch <sql|sqlite>              Create a project from scratch using Weaver, SQLC, and go-migrate
+  new  <sql|sqlite3>                       Create a project from scratch using Weaver, SQLC, and go-migrate
+  create-scratch <sql|sqlite3>             Create a project from scratch using Weaver, SQLC, and go-migrate
   build                                    Build the Weaver component with SQLC
   make-migrate <app-name> <name>           Create a new migration for an app
   migrate <app-name> <up|down>             Run migrations for an app
@@ -43,6 +44,7 @@ Examples:
 const (
 	cmdhelp          = "help"
 	cmdVersion       = "version"
+	cmdNew           = "new"
 	cmdCreateScratch = "create-scratch"
 	cmdBuild         = "build"
 	cmdMakeMigrate   = "make-migrate"
@@ -72,7 +74,7 @@ func main() {
 		fmt.Fprint(os.Stdout, usage)
 	case cmdVersion:
 		fmt.Fprintln(os.Stdout, internal.Version)
-	case cmdCreateScratch:
+	case cmdCreateScratch, cmdNew:
 		internal.Build(DefaultComponentName, internal.KindAll, flag.Arg(1))
 		internal.SqlcGenerate()
 		internal.ModTidy()
