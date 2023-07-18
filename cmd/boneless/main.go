@@ -13,7 +13,7 @@ const usage = `Usage: boneless [target]
 Targets:
   help                                     Show commands for use
   version                                  Show version
-  create-scratch                           Create a project from scratch using Weaver, SQLC, and go-migrate
+  create-scratch <sql|sqlite>              Create a project from scratch using Weaver, SQLC, and go-migrate
   build                                    Build the Weaver component with SQLC
   make-migrate <app-name> <name>           Create a new migration for an app
   migrate <app-name> <up|down>             Run migrations for an app
@@ -25,6 +25,7 @@ Parameters:
   <app-name>                               Name of the app to create or run migrations on
   <name>                                   Name of the migration to create
   <up|down>                                Specify "up" to apply migrations or "down" to rollback migrations
+  <sql|sqlite>                             Specify "sql" to use some SQL "sqlite3" to use sqlite3 and it is the default
 
 Examples:
   boneless help
@@ -72,12 +73,12 @@ func main() {
 	case cmdVersion:
 		fmt.Fprintln(os.Stdout, internal.Version)
 	case cmdCreateScratch:
-		internal.Build(DefaultComponentName, internal.KindAll)
+		internal.Build(DefaultComponentName, internal.KindAll, flag.Arg(1))
 		internal.SqlcGenerate()
 		internal.ModTidy()
 		internal.WeaverGenerate()
 	case cmdCreateApp:
-		internal.Build(flag.Arg(1), internal.KindComponent)
+		internal.Build(flag.Arg(1), internal.KindComponent, "")
 		internal.SqlcGenerate(flag.Arg(1))
 		internal.WeaverGenerate()
 	case cmdBuild:

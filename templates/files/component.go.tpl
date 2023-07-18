@@ -6,8 +6,14 @@ import (
 	"fmt"
 
 	"github.com/ServiceWeaver/weaver"
-	_ "github.com/go-sql-driver/mysql"
+
 	"{{.Module}}/internal/{{.ComponentName}}/store"
+{{if .IsSQL}}
+    _ "github.com/go-sql-driver/mysql"
+	{{- end}}
+	{{- if .IsSQLLite3}}
+	_ "github.com/mattn/go-sqlite3"
+	{{- end}}
 )
 
 type Component interface {
@@ -32,10 +38,12 @@ func (e *implapp) Init(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("not open: %w", err)
 	}
+
 	err = db.PingContext(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to ping: %w", err)
 	}
+
 	e.db = store.New(db)
 	return nil
 }
