@@ -88,31 +88,8 @@ func RunMigrate(componentName, upDown string) {
 	wasInstalledDriversDB()
 	var dir = findComponentPath(componentName)
 
-	queryConn := ""
-	if sqlite3 := WhichSqlite3(); sqlite3 != "" {
-		queryConn = "sqlite3://" + sqlite3
-	} else {
-		queryConn = ReadToml(componentName)
-	}
-
+	queryConn := ReadToml(componentName)
 	_ = runCmd("migrate", "-path", dir+"/db/migrations/", "-database", queryConn, "-verbose", upDown)
-}
-
-func WhichSqlite3() (path string) {
-	pwd, err := os.Getwd()
-	if err != nil {
-		panic("failed to found PWD: " + err.Error())
-	}
-
-	filepath.Walk(pwd, func(p string, info fs.FileInfo, _ error) error {
-		// TODO: need to improve to identify which file used to sqlite3
-		if !info.IsDir() && info.Name() == "db.sqlite3" {
-			path = p
-		}
-		return nil
-	})
-
-	return path
 }
 
 func wasInstalledDriversDB() {
