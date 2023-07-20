@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"bytes"
 	"io/fs"
 	"os"
 	"os/exec"
@@ -62,7 +63,7 @@ func WeaverGenerate() {
 
 func RunMakeMigrate(componentName string, name string) {
 	dir := findComponentPath(componentName)
-	err := runCmd("migrate", "create", "-ext", "sql", "-dir", dir+"/db/migrations/", name)
+	err := runCmd("migrate", "create", "-seq", "-ext", "sql", "-dir", dir+"/db/migrations/", name)
 	if err != nil {
 		panic(err)
 	}
@@ -84,10 +85,28 @@ func runCmd(name string, args ...string) (err error) {
 }
 
 func RunMigrate(componentName, upDown string) {
-	dir := findComponentPath(componentName)
+	wasInstalledDriversDB()
+	var dir = findComponentPath(componentName)
+
 	queryConn := ReadToml(componentName)
-	err := runCmd("migrate", "-path", dir+"/db/migrations/", "-database", queryConn, "-verbose", upDown)
-	if err != nil {
-		panic(err)
+	_ = runCmd("migrate", "-path", dir+"/db/migrations/", "-database", queryConn, "-verbose", upDown)
+}
+
+func wasInstalledDriversDB() {
+	cmd := exec.Command("migrate", "-h")
+	var errb bytes.Buffer
+	cmd.Stderr = &errb
+	_ = cmd.Run()
+
+	out := errb.String()
+	if i := strings.LastIndex(out, "Database drivers: "); i > -1 {
+		out = out[i:]
+		out = out[:strings.LastIndex(out, "\n")]
+		if !strings.Contains(out, "mysql") || !strings.Contains(out, "sqlite3") {
+			msg := `not supported drivers: mysql or sqlite3.
+Install go-migrate with tags: go install -tags 'sql mysql sqlite3' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+Or read documentation from github.com/golang-migrate/migrate`
+			println(msg)
+		}
 	}
 }

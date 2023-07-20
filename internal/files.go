@@ -1,7 +1,5 @@
 package internal
 
-type tplKind string
-
 type tplFiles struct {
 	pattern  string
 	filePath string
@@ -47,8 +45,13 @@ var templateFiles = []tplFiles{
 		kind:     KindComponent,
 	},
 	{
-		pattern:  "files/schema.sql.tpl",
-		filePath: "/internal/%s/db/migrations/schema.sql",
+		pattern:  "files/create_table.up.sql.tpl",
+		filePath: "/internal/%s/db/migrations/000001_create_table.up.sql",
+		kind:     KindComponent,
+	},
+	{
+		pattern:  "files/create_table.down.sql.tpl",
+		filePath: "/internal/%s/db/migrations/000001_create_table.down.sql",
 		kind:     KindComponent,
 	},
 	{

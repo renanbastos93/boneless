@@ -7,5 +7,5 @@ Driver = "mysql"
 Source = "root:@tcp(localhost:3306)/mydatabase"
 {{- else -}}
 Driver = "sqlite3"
-Source = "sqlite3.db"
+Source = "db.sqlite3"
 {{- end}}

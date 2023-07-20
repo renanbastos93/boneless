@@ -17,13 +17,14 @@ type contentTpl struct {
 }
 
 const (
+	MySQL    = "mysql"
 	SQL      = "sql"
 	SQLlite3 = "sqlite3"
 )
 
 func (e *contentTpl) setDatabaseToUse(whichSql string) {
 	switch strings.ToLower(whichSql) {
-	case SQL:
+	case SQL, MySQL:
 		e.IsSQL = true
 	default:
 		e.IsSQLLite3 = true
@@ -31,7 +32,7 @@ func (e *contentTpl) setDatabaseToUse(whichSql string) {
 }
 
 func generateFile(filePath string) (fd *os.File) {
-	_, err := os.Stat(filePath)
+	info, err := os.Stat(filePath)
 	if err != nil {
 		if !os.IsNotExist(err) {
 			panic(err)
@@ -42,6 +43,15 @@ func generateFile(filePath string) (fd *os.File) {
 				panic(err)
 			}
 		}
+	}
+
+	// It will ensure that don't replace files in case you repeat `boneless new` command
+	if info != nil {
+		fd, err := os.Open(filePath)
+		if err != nil {
+			panic(err)
+		}
+		return fd
 	}
 
 	fd, err = os.Create(filePath)
@@ -87,13 +97,15 @@ func Build(appName string, which string, whichSql string) {
 		if tf.kind == KindComponent {
 			filePath = fmt.Sprintf(filePath, appName)
 		}
+
 		fd := generateFile(filePath)
 		t, err := template.ParseFS(templates.CreateTemplateFS, tf.pattern)
 		if err != nil {
 			panic(err)
 		}
-		t.Execute(fd, ct)
+		_ = t.Execute(fd, ct)
 		_ = fd.Close()
-		fmt.Println("created file:", filePath)
 	}
+
+	println("Created files!")
 }
