@@ -1,14 +1,12 @@
 package internal
 
 import (
-	"fmt"
-	"io/fs"
 	"os"
-	"os/exec"
 	"os/signal"
-	"path/filepath"
 	"syscall"
 	"time"
+
+	"github.com/renanbastos93/boneless/pkg/tools"
 )
 
 const msgRunning = `
@@ -21,37 +19,18 @@ const msgRunning = `
 running...
 `
 
-func findMainFile() (filePath string) {
-	pwd, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-
-	// TODO: improve that to ensure that the file is the package main
-	_ = filepath.Walk(pwd, func(path string, info fs.FileInfo, _ error) error {
-		if !info.IsDir() {
-			if info.Name() == "main.go" {
-				filePath = path
-			}
-		}
-		return nil
-	})
-
-	return filePath
-}
-
 func Start() {
-	mainFile := findMainFile()
+	mainFile := tools.FindMainFile()
 
 	// Set SERVICEWEAVER_CONFIG environment variable if not already set
 	if _, ok := os.LookupEnv("SERVICEWEAVER_CONFIG"); !ok {
 		err := os.Setenv("SERVICEWEAVER_CONFIG", "./weaver.toml")
 		if err != nil {
-			panic(fmt.Sprintf("failed to set env var SERVICEWEAVER_CONFIG: %s", err))
+			panic("failed to set env var SERVICEWEAVER_CONFIG: " + err.Error())
 		}
 	}
 
-	cmd := exec.Command("go", "run", mainFile)
+	cmd := tools.NewCmd("go", "run", mainFile)
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Setpgid: true,
 	}
@@ -75,6 +54,7 @@ func Start() {
 
 func CloseBySignal(pid int) {
 	println("PID:", pid)
+
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGKILL, syscall.SIGTERM)
 	select {

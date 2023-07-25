@@ -1,4 +1,4 @@
-package main
+package cli
 
 import (
 	"flag"
@@ -6,9 +6,25 @@ import (
 	"os"
 
 	"github.com/renanbastos93/boneless/internal"
+	"github.com/renanbastos93/boneless/pkg/tools"
 )
 
-const usage = `Usage: boneless [target]
+const (
+	cmdhelp          = "help"
+	cmdVersion       = "version"
+	cmdNew           = "new"
+	cmdCreateScratch = "create-scratch"
+	cmdBuild         = "build"
+	cmdMakeMigrate   = "make-migrate"
+	cmdMigrate       = "migrate"
+	cmdCreateApp     = "create-app"
+	cmdBuildApp      = "build-app"
+	cmdRun           = "run"
+
+	DefaultComponentName = "app"
+)
+
+const Usage = `Usage: boneless [target]
 
 Targets:
   help                                     Show commands for use
@@ -41,62 +57,60 @@ Examples:
 
 `
 
-const (
-	cmdhelp          = "help"
-	cmdVersion       = "version"
-	cmdNew           = "new"
-	cmdCreateScratch = "create-scratch"
-	cmdBuild         = "build"
-	cmdMakeMigrate   = "make-migrate"
-	cmdMigrate       = "migrate"
-	cmdCreateApp     = "create-app"
-	cmdBuildApp      = "build-app"
-	cmdRun           = "run"
+// TODO: valide if we should use `` or `flag.Arg(i)`
 
-	DefaultComponentName = "app"
-)
+func newScratch() {
+	opt := Options{
+		AppName:       DefaultComponentName,
+		WhichTemplate: All,
+		WhichDatabase: flag.Arg(1),
+	}
 
-func init() {
-	internal.ValidateLatestVersion()
+	New(opt).Build()
+	tools.SqlcGenerate()
+	tools.ModTidy()
+	tools.WeaverGenerate()
 }
 
-func main() {
-	flag.Usage = func() { fmt.Fprint(os.Stderr, usage) }
-	flag.Parse()
-
-	if len(flag.Args()) == 0 {
-		fmt.Fprint(os.Stderr, usage)
-		os.Exit(1)
-	}
-
-	switch flag.Arg(0) {
-	case cmdhelp:
-		fmt.Fprint(os.Stdout, usage)
-	case cmdVersion:
+var CmdToRun = map[string]func(){
+	cmdhelp: func() {
+		fmt.Fprint(os.Stdout, Usage)
+	},
+	cmdVersion: func() {
 		fmt.Fprintln(os.Stdout, internal.Version)
-	case cmdCreateScratch, cmdNew:
-		internal.Build(DefaultComponentName, internal.KindAll, flag.Arg(1))
-		internal.SqlcGenerate()
-		internal.ModTidy()
-		internal.WeaverGenerate()
-	case cmdCreateApp:
-		internal.Build(flag.Arg(1), internal.KindComponent, "")
-		internal.SqlcGenerate(flag.Arg(1))
-		internal.WeaverGenerate()
-	case cmdBuild:
-		internal.SqlcGenerate()
-		internal.WeaverGenerate()
-	case cmdBuildApp:
-		internal.SqlcGenerate(flag.Arg(1))
-		internal.WeaverGenerate()
-	case cmdMakeMigrate:
-		internal.SqlcGenerate()
-		internal.RunMakeMigrate(flag.Arg(1), flag.Arg(2))
-	case cmdMigrate:
-		internal.RunMigrate(flag.Arg(1), flag.Arg(2))
-	case cmdRun:
+	},
+	cmdNew: func() {
+		newScratch()
+	},
+	cmdCreateScratch: func() {
+		newScratch()
+	},
+	cmdCreateApp: func() {
+		opt := Options{
+			AppName:       flag.Arg(1),
+			WhichTemplate: Component,
+		}
+
+		New(opt).Build()
+		tools.SqlcGenerate(flag.Arg(1))
+		tools.WeaverGenerate()
+	},
+	cmdBuild: func() {
+		tools.SqlcGenerate()
+		tools.WeaverGenerate()
+	},
+	cmdBuildApp: func() {
+		tools.SqlcGenerate(flag.Arg(1))
+		tools.WeaverGenerate()
+	},
+	cmdMakeMigrate: func() {
+		tools.SqlcGenerate()
+		tools.RunMakeMigrate(flag.Arg(1), flag.Arg(2))
+	},
+	cmdMigrate: func() {
+		tools.RunMigrate(flag.Arg(1), flag.Arg(2))
+	},
+	cmdRun: func() {
 		internal.Start()
-	default:
-		flag.Usage()
-	}
+	},
 }

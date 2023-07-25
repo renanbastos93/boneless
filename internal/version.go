@@ -3,14 +3,15 @@ package internal
 import (
 	"bytes"
 	"fmt"
-	"os/exec"
 	"strings"
+
+	"github.com/renanbastos93/boneless/pkg/tools"
 )
 
-const Version = "v0.5.0"
+const Version = "v0.6.0"
 
 func ValidateLatestVersion() {
-	cmd := exec.Command("go", "list", "-m", "github.com/renanbastos93/boneless@latest")
+	cmd := tools.NewCmd("go", "list", "-m", "github.com/renanbastos93/boneless@latest")
 	var stdOut bytes.Buffer
 	cmd.Stdout = &stdOut
 	if cmd.Run() != nil {
