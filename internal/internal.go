@@ -63,7 +63,7 @@ func WeaverGenerate() {
 
 func RunMakeMigrate(componentName string, name string) {
 	dir := findComponentPath(componentName)
-	err := runCmd("migrate", "create", "-seq", "-ext", "sql", "-dir", dir+"/db/migrations/", name)
+	err := runCmd("migrate", "create", "-ext", "sql", "-dir", dir+"/db/migrations/", name)
 	if err != nil {
 		panic(err)
 	}
