@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const Version = "v0.5.0"
+const Version = "v0.5.2"
 
 func ValidateLatestVersion() {
 	cmd := exec.Command("go", "list", "-m", "github.com/renanbastos93/boneless@latest")
