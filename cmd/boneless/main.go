@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/renanbastos93/boneless/internal"
+	"github.com/renanbastos93/boneless/internal/run"
 )
 
 const usage = `Usage: boneless [target]
@@ -31,6 +32,7 @@ Parameters:
 Examples:
   boneless help
   boneless version
+  boneless new sqlite3
   boneless create-scratch
   boneless build
   boneless make-migrate my-app migration-name
@@ -95,7 +97,7 @@ func main() {
 	case cmdMigrate:
 		internal.RunMigrate(flag.Arg(1), flag.Arg(2))
 	case cmdRun:
-		internal.Start()
+		run.Start()
 	default:
 		flag.Usage()
 	}
