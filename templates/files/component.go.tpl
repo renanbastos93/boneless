@@ -30,7 +30,8 @@ type Config struct {
 type implapp struct {
 	weaver.Implements[Component]
 	weaver.WithConfig[Config]
-	db *store.Queries
+	dbConn *sql.DB
+	db     *store.Queries
 }
 
 func (e *implapp) Init(ctx context.Context) error {
@@ -46,6 +47,12 @@ func (e *implapp) Init(ctx context.Context) error {
 
 	e.db = store.New(db)
 	return nil
+}
+
+
+func (e *implapp) Shutdown(ctx context.Context) error {
+	// TODO: create your logic to shutdown the component
+	return e.dbConn.Close()
 }
 
 func (e implapp) AllExamples(ctx context.Context) (out AllExamplesOut, err error) {
