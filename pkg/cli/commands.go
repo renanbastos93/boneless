@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/renanbastos93/boneless"
 	"github.com/renanbastos93/boneless/internal"
 	"github.com/renanbastos93/boneless/pkg/tools"
 )
@@ -77,7 +78,7 @@ var CmdToRun = map[string]func(){
 		fmt.Fprint(os.Stdout, Usage)
 	},
 	cmdVersion: func() {
-		fmt.Fprintln(os.Stdout, internal.Version)
+		fmt.Fprintln(os.Stdout, boneless.Version)
 	},
 	cmdNew: func() {
 		newScratch()

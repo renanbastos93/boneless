@@ -36,7 +36,7 @@ func GetProjectName(dir string) (moduleName string) {
 	return moduleName
 }
 
-func ReadToml(componentName string) (qsConn string) {
+func readToml(componentName string) (qsConn string) {
 	pwd, err := os.Getwd()
 	if err != nil {
 		panic(err)
@@ -82,7 +82,7 @@ func ReadToml(componentName string) (qsConn string) {
 	return qsConn
 }
 
-func FindComponentPath(componentName string) (dir string) {
+func findComponentPath(componentName string) (dir string) {
 	pwd, err := os.Getwd()
 	if err != nil {
 		panic(err)
@@ -124,7 +124,7 @@ func SqlcGenerate(componentName ...string) {
 	}
 
 	if len(componentName) > 0 {
-		dir := FindComponentPath(componentName[0])
+		dir := findComponentPath(componentName[0])
 		sqlcGenerateByComponent(dir + "/db/sqlc.yaml")
 		return
 	}
@@ -145,7 +145,7 @@ func WeaverGenerate() {
 }
 
 func RunMakeMigrate(componentName string, name string) {
-	dir := FindComponentPath(componentName)
+	dir := findComponentPath(componentName)
 	err := NewCmd("migrate", "create", "-seq", "-ext", "sql", "-dir", dir+"/db/migrations/", name).Run()
 	if err != nil {
 		panic(err)
@@ -161,9 +161,9 @@ func ModTidy() {
 
 func RunMigrate(componentName, upDown string) {
 	wasInstalledDriversDB()
-	var dir = FindComponentPath(componentName)
+	var dir = findComponentPath(componentName)
 
-	queryConn := ReadToml(componentName)
+	queryConn := readToml(componentName)
 	_ = NewCmd("migrate", "-path", dir+"/db/migrations/", "-database", queryConn, "-verbose", upDown).Run()
 }
 
