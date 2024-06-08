@@ -45,6 +45,7 @@ func (e *implapp) Init(ctx context.Context) error {
 		return fmt.Errorf("failed to ping: %w", err)
 	}
 
+	e.dbConn = db
 	e.db = store.New(db)
 	return nil
 }
