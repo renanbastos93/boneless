@@ -6,6 +6,8 @@ import (
 )
 
 func DeleteApp(appName string) {
+	validateAppName(appName)
+
 	appFolderPath := getAppFolderPath(appName)
 	checkIfAppFolderExists(appFolderPath)
 
@@ -17,6 +19,18 @@ func DeleteApp(appName string) {
 	}
 
 	fmt.Printf("App deleted successfully: %s\n", appName)
+}
+
+func validateAppName(appName string) {
+	if appName == "app" {
+		fmt.Println("You can't delete the app folder, it's the example component")
+		os.Exit(0)
+	}
+
+	if appName == "bff" {
+		fmt.Println("You can't delete the bff folder, it's required to run the application")
+		os.Exit(0)
+	}
 }
 
 func checkIfAppFolderExists(pathToDelete string) {
