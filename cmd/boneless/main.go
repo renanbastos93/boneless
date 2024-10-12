@@ -20,6 +20,7 @@ Targets:
   migrate <app-name> <up|down>             Run migrations for an app
   create-app <app-name>                    Create a new app based on a template
   build-app <app-name>                     Build an app using Weaver and SQLC
+  delete-app <app-name>                    Delete an app created
   run                                      Run the project using Weaver
 
 Parameters:
@@ -37,6 +38,7 @@ Examples:
   boneless migrate my-app up
   boneless create-app my-app
   boneless build-app my-app
+  boneless delete-app my-app
   boneless run
 
 `
@@ -51,6 +53,7 @@ const (
 	cmdMigrate       = "migrate"
 	cmdCreateApp     = "create-app"
 	cmdBuildApp      = "build-app"
+	cmdDeleteApp     = "delete-app"
 	cmdRun           = "run"
 
 	DefaultComponentName = "app"
@@ -83,6 +86,8 @@ func main() {
 		internal.Build(flag.Arg(1), internal.KindComponent, "")
 		internal.SqlcGenerate(flag.Arg(1))
 		internal.WeaverGenerate()
+	case cmdDeleteApp:
+		internal.DeleteApp(flag.Arg(1))
 	case cmdBuild:
 		internal.SqlcGenerate()
 		internal.WeaverGenerate()
