@@ -12,7 +12,7 @@ import (
 
 type implBFF struct {
 	weaver.Implements[weaver.Main]
-	example weaver.Ref[app.Component]
+	example weaver.Ref[{{.ComponentName}}.Component]
 	bff     weaver.Listener `weaver:"bff"`
 
 	f *fiber.App
