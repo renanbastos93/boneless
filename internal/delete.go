@@ -15,7 +15,7 @@ func DeleteApp(appName string) {
 	err := os.RemoveAll(appFolderPath)
 	if err != nil {
 		fmt.Println("Error deleting app folder: ", err)
-		os.Exit(1)
+		panic(err)
 	}
 
 	fmt.Printf("App deleted successfully: %s\n", appName)
@@ -40,7 +40,7 @@ func checkIfAppFolderExists(pathToDelete string) {
 		} else {
 			fmt.Println("Error checking app folder: ", err)
 		}
-		os.Exit(1)
+		panic(err)
 	}
 }
 
