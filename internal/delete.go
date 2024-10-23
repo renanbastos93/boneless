@@ -16,7 +16,7 @@ func DeleteApp(appName string) {
 	// Delete the app folder
 	err := os.RemoveAll(appFolderPath)
 	if err != nil {
-		panic(err)
+		panic("Error deleting app folder: "+ err.Error())
 	}
 
 	fmt.Printf("App deleted successfully: %s\n", appName)
