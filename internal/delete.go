@@ -11,12 +11,13 @@ func DeleteApp(appName string) {
 	}
 
 	appFolderPath := getAppFolderPath(appName)
-	checkIfAppFolderExists(appFolderPath)
+	if exists := folderExists(appFolderPath); !exists {
+		return
+	}
 
 	// Delete the app folder
-	err := os.RemoveAll(appFolderPath)
-	if err != nil {
-		panic("Error deleting app folder: "+ err.Error())
+	if err := os.RemoveAll(appFolderPath); err != nil {
+		panic("Error deleting app folder: " + err.Error())
 	}
 
 	fmt.Printf("App deleted successfully: %s\n", appName)
@@ -24,27 +25,28 @@ func DeleteApp(appName string) {
 
 func isAppNameValid(appName string) bool {
 	if appName == "app" {
-		fmt.Println("You can't delete the app folder, it's the example component")
+		fmt.Println("You can't delete the app folder: it's the example component")
 		return false
 	}
 
 	if appName == "bff" {
-		fmt.Println("You can't delete the bff folder, it's required to run the application")
+		fmt.Println("You can't delete the bff folder: it's required to run the application")
 		return false
 	}
 
 	return true
 }
 
-func checkIfAppFolderExists(pathToDelete string) {
+func folderExists(pathToDelete string) bool {
 	if _, err := os.Stat(pathToDelete); err != nil {
 		if os.IsNotExist(err) {
 			fmt.Println("App folder not found")
-		} else {
-			fmt.Println("Error checking app folder: ", err)
+			return false
 		}
-		panic(0)
+
+		panic("Error checking app folder: " + err.Error())
 	}
+	return true
 }
 
 func getAppFolderPath(appName string) string {
