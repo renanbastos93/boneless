@@ -13,7 +13,7 @@ const usage = `Usage: boneless [target]
 Targets:
   help                                     Show commands for use
   version                                  Show version
-  new  <sql|sqlite3>                       Create a project from scratch using Weaver, SQLC, and go-migrate
+  new <sql|sqlite3>                        Create a project from scratch using Weaver, SQLC, and go-migrate
   create-scratch <sql|sqlite3>             Create a project from scratch using Weaver, SQLC, and go-migrate
   build                                    Build the Weaver component with SQLC
   make-migrate <app-name> <name>           Create a new migration for an app
@@ -21,6 +21,8 @@ Targets:
   create-app <app-name>                    Create a new app based on a template
   build-app <app-name>                     Build an app using Weaver and SQLC
   delete-app <app-name>                    Delete an app created
+  install-deps [package]          Installs external dependencies required by Boneless (e.g., weaver, sqlc). If no package is specified, all dependencies are updated.
+  update-deps [package]           Updates the specified external dependency (e.g., weaver, migrate). If no package is specified, all dependencies are updated.
   run                                      Run the project using Weaver
 
 Parameters:
@@ -28,6 +30,8 @@ Parameters:
   <name>                                   Name of the migration to create
   <up|down>                                Specify "up" to apply migrations or "down" to rollback migrations
   <sql|sqlite>                             Specify "sql" to use some SQL "sqlite3" to use sqlite3 and it is the default
+  [package]                                Specify the package to update or install like "weaver, sqlc, golang-migrate"
+
 
 Examples:
   boneless help
@@ -39,6 +43,10 @@ Examples:
   boneless create-app my-app
   boneless build-app my-app
   boneless delete-app my-app
+  boneless install-deps
+  boneless install-deps weaver
+  boneless update-deps
+  boneless update-deps sqlc
   boneless run
 
 `
@@ -55,6 +63,8 @@ const (
 	cmdBuildApp      = "build-app"
 	cmdDeleteApp     = "delete-app"
 	cmdRun           = "run"
+	cmdInstallDeps   = "install-deps"
+	cmdUpdateDeps    = "update-deps"
 
 	DefaultComponentName = "app"
 )
@@ -78,6 +88,7 @@ func main() {
 	case cmdVersion:
 		fmt.Fprintln(os.Stdout, internal.Version)
 	case cmdCreateScratch, cmdNew:
+		internal.ModInit()
 		internal.Build(DefaultComponentName, internal.KindAll, flag.Arg(1))
 		internal.SqlcGenerate()
 		internal.ModTidy()
@@ -101,6 +112,10 @@ func main() {
 		internal.RunMigrate(flag.Arg(1), flag.Arg(2))
 	case cmdRun:
 		internal.Start()
+	case cmdInstallDeps:
+		internal.InstallDeps(flag.Arg(1))
+	case cmdUpdateDeps:
+		internal.UpdateDeps(flag.Arg(1))
 	default:
 		flag.Usage()
 	}

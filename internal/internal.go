@@ -31,7 +31,7 @@ func sqlcGenerateByComponent(filePath string) {
 		return
 	}
 
-	_ = runCmd("sqlc", "generate", "-f", filePath)
+	_ = runCmd(sqlcCLI, "generate", "-f", filePath)
 }
 
 func SqlcGenerate(componentName ...string) {
@@ -48,14 +48,14 @@ func SqlcGenerate(componentName ...string) {
 
 	filepath.Walk(pwd, func(path string, info fs.FileInfo, err error) error {
 		if !info.IsDir() && strings.HasSuffix(info.Name(), "sqlc.yaml") {
-			_ = runCmd("sqlc", "generate", "-f", path)
+			_ = runCmd(sqlcCLI, "generate", "-f", path)
 		}
 		return nil
 	})
 }
 
 func WeaverGenerate() {
-	err := runCmd("weaver", "generate", "./...")
+	err := runCmd(weaverCLI, "generate", "./...")
 	if err != nil {
 		panic(err)
 	}
@@ -63,14 +63,14 @@ func WeaverGenerate() {
 
 func RunMakeMigrate(componentName string, name string) {
 	dir := findComponentPath(componentName)
-	err := runCmd("migrate", "create", "-ext", "sql", "-dir", dir+"/db/migrations/", name)
+	err := runCmd(migrateCLI, "create", "-ext", "sql", "-dir", dir+"/db/migrations/", name)
 	if err != nil {
 		panic(err)
 	}
 }
 
 func ModTidy() {
-	err := runCmd("go", "mod", "tidy")
+	err := runCmd(goCLI, "mod", "tidy")
 	if err != nil {
 		panic(err)
 	}
@@ -89,11 +89,11 @@ func RunMigrate(componentName, upDown string) {
 	var dir = findComponentPath(componentName)
 
 	queryConn := ReadToml(componentName)
-	_ = runCmd("migrate", "-path", dir+"/db/migrations/", "-database", queryConn, "-verbose", upDown)
+	_ = runCmd(migrateCLI, "-path", dir+"/db/migrations/", "-database", queryConn, "-verbose", upDown)
 }
 
 func wasInstalledDriversDB() {
-	cmd := exec.Command("migrate", "-h")
+	cmd := exec.Command(migrateCLI, "-h")
 	var errb bytes.Buffer
 	cmd.Stderr = &errb
 	_ = cmd.Run()

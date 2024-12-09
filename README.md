@@ -65,12 +65,10 @@ This directory and file structure reflects the adopted architecture in the repos
 Let's create our first project from scratch using Boneless!
 
 ### Installing dependencies
-First, we need to install the binary of Service Weaver, Go Migrate, SQLC, and Boneless. Even so, I suggest you read the documentation of all of them on your official websites.
+First, we need to install Boneless. Then, use the `install-deps` command to ensure its dependencies are installed correctly. If you encounter any issues, open an issue or check the official websites of the dependencies, such as SQLC, Service Weaver, and Go Migrate, for more information.
 ```sh
-$ go install -tags 'mysql sqlite3' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
-$ go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
-$ go install github.com/ServiceWeaver/weaver/cmd/weaver@latest
 $ go install github.com/renanbastos93/boneless/cmd/boneless@latest
+$ boneless install-deps
 ```
 To ensure a smooth setup of your Boneless project, let's install all the dependencies, including Boneless itself. If you're not using macOS, you can access their website for detailed instructions on installing Boneless and its dependencies specific to your operating system.
 
@@ -82,20 +80,25 @@ Usage: boneless [target]
 Targets:
   help                                     Show commands for use
   version                                  Show version
-  new  <sql|sqlite3>                       Create a project from scratch using Weaver, SQLC, and go-migrate
+  new <sql|sqlite3>                        Create a project from scratch using Weaver, SQLC, and go-migrate
   create-scratch <sql|sqlite3>             Create a project from scratch using Weaver, SQLC, and go-migrate
   build                                    Build the Weaver component with SQLC
   make-migrate <app-name> <name>           Create a new migration for an app
   migrate <app-name> <up|down>             Run migrations for an app
   create-app <app-name>                    Create a new app based on a template
   build-app <app-name>                     Build an app using Weaver and SQLC
+  delete-app <app-name>                    Delete an app created
+  install-deps [package]          Installs external dependencies required by Boneless (e.g., weaver, sqlc). If no package is specified, all dependencies are updated.
+  update-deps [package]           Updates the specified external dependency (e.g., weaver, migrate). If no package is specified, all dependencies are updated.
   run                                      Run the project using Weaver
 
 Parameters:
   <app-name>                               Name of the app to create or run migrations on
   <name>                                   Name of the migration to create
   <up|down>                                Specify "up" to apply migrations or "down" to rollback migrations
-  <sql|sqlite>                             Specify "sql" to use some SQL "sqlite3" to use sqlite3 and it is the default
+  <sql|sqlite>                             Specify "sql" to use some SQL "sqlite3" to use sqlite3 and it is the default 
+  [package]                                Specify the package to update or install like "weaver, sqlc, golang-migrate"
+
 
 Examples:
   boneless help
@@ -106,7 +109,13 @@ Examples:
   boneless migrate my-app up
   boneless create-app my-app
   boneless build-app my-app
+  boneless delete-app my-app
+  boneless install-deps
+  boneless install-deps weaver
+  boneless update-deps
+  boneless update-deps sqlc
   boneless run
+
 ```
 After that is installed, let's create our first project from scratch using Boneless, a framework based on clean architecture, to efficiently generate and organize the project structure, implement functionality, and deploy it with ease.
 
