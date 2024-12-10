@@ -5,13 +5,15 @@ import (
 )
 
 type packages struct {
-	name, pkg string
+	name string
+	pkg  string
+	args []string
 }
 
 var PackagesForInstall = []packages{
-	{"golang-migrate", "github.com/golang-migrate/migrate/v4/cmd/migrate@latest"},
-	{"sqlc", "github.com/sqlc-dev/sqlc/cmd/sqlc@latest"},
-	{"weaver", "github.com/ServiceWeaver/weaver/cmd/weaver@latest"},
+	{"golang-migrate", "github.com/golang-migrate/migrate/v4/cmd/migrate@latest", []string{"-tags", "mysql sqlite3"}},
+	{"sqlc", "github.com/sqlc-dev/sqlc/cmd/sqlc@latest", nil},
+	{"weaver", "github.com/ServiceWeaver/weaver/cmd/weaver@latest", nil},
 }
 
 func InstallDeps(name string) {
@@ -32,7 +34,7 @@ func installDeps(packages ...packages) {
 			println(p.name, "already installed!")
 			continue
 		}
-		GoInstall(p.name, p.pkg)
+		GoInstall(p.name, append(p.args, p.pkg)...)
 	}
 }
 
@@ -64,6 +66,6 @@ func UpdateDeps(name string) {
 
 func updateDeps(packages ...packages) {
 	for _, p := range packages {
-		GoInstall(p.name, p.pkg)
+		GoInstall(p.name, append(p.args, p.pkg)...)
 	}
 }

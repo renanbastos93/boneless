@@ -9,7 +9,7 @@ import (
 	"golang.org/x/mod/semver"
 )
 
-const Version = "v0.7.0"
+const Version = "v0.7.1"
 
 func ValidateLatestVersion() {
 	cmd := exec.Command(goCLI, "list", "-m", "github.com/renanbastos93/boneless@latest")
